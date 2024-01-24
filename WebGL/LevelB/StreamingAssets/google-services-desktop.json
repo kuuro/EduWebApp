@@ -1,0 +1,37 @@
+{
+  "client": [
+    {
+      "services": {
+        "appinvite_service": {
+          "status": 1
+        }, 
+        "analytics_service": {
+          "status": 0
+        }
+      }, 
+      "oauth_client": [
+        {
+          "client_id": "670376679834-251tlogublu3mcnelg3o7v7ap2s4d5no.apps.googleusercontent.com"
+        }
+      ], 
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjsYCT0jR_NJQWglyWB-01-v6wiY_PMik"
+        }
+      ], 
+      "client_info": {
+        "mobilesdk_app_id": "1:670376679834:ios:be0377145bd23b1e284223", 
+        "android_client_info": {
+          "package_name": "com.vkids.ios.vkidsedu"
+        }
+      }
+    }
+  ], 
+  "configuration_version": "1", 
+  "project_info": {
+    "storage_bucket": "vkids-academy.appspot.com", 
+    "project_id": "vkids-academy", 
+    "firebase_url": "https://vkids-academy.firebaseio.com", 
+    "project_number": "670376679834"
+  }
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Sub Account</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: url('Resources/H15-1.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        #scrollContainer {
+            display: flex;
+            overflow-x: auto;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            white-space: nowrap;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: 5px solid #f90;
+            background-color: #795229; /* Solid background color for the container */
+            margin-bottom: 20px;
+        }
+
+        .subAccount {
+            margin-right: 20px;
+            margin-left: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .subAccount:hover {
+            transform: scale(1.1);
+        }
+
+        .subAccount img {
+            border-radius: 50%;
+            width: 180px;
+            height: 180px;
+            border: 5px solid orange;
+            transition: border 0.3s ease;
+        }
+
+        .subAccount:hover img {
+            border-color: #f90;
+        }
+
+        .subAccount p {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #fff;
+        }
+
+        #createSubAccountPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        #createSubAccountPopup h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+            font-size: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button.cancel {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        button.cancel:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="scrollContainer" style="color: #5d5d5d; font-size: 50px; margin-bottom: 10px;">Select Sub Account</label>
+
+    <div id="scrollContainer">
+        <!-- Example sub accounts -->
+        <div class="subAccount" onclick="navigateToGame()">
+            <img src="Resources/ava1.png" alt="Avatar 1">
+            <p>User Name 1</p>
+        </div>
+        <div class="subAccount" onclick="navigateToGame()">
+            <img src="Resources/ava2.png" alt="Avatar 2">
+            <p>User Name 2</p>
+        </div>
+        <div class="subAccount" onclick="navigateToGame()">
+            <img src="Resources/ava3.png" alt="Avatar 3">
+            <p>User Name 3</p>
+        </div>
+        <div class="subAccount" onclick="navigateToGame()">
+            <img src="Resources/ava4.png" alt="Avatar 4">
+            <p>User Name 4</p>
+        </div>
+        <div class="subAccount" onclick="navigateToGame()">
+            <img src="Resources/ava5.png" alt="Avatar 5">
+            <p>User Name 5</p>
+        </div>
+        <div class="subAccount" onclick="openCreateSubAccountPopup()">
+            <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/000/376/259/small/Basic_Elements__28121_29.jpg"
+                alt="Create Sub Account">
+            <p>Create New</p>
+        </div>
+    </div>
+
+    <div id="createSubAccountPopup">
+        <h2>Create Sub Account</h2>
+        <label for="subAccountName">Name:</label>
+        <input type="text" id="subAccountName">
+        <label for="subAccountAge">Age:</label>
+        <input type="text" id="subAccountAge">
+        <button onclick="createSubAccount()">Create</button>
+        <button class="cancel" onclick="closeCreateSubAccountPopup()">Cancel</button>
+    </div>
+
+    <script>
+        function navigateToGame() {
+            window.location.href = 'game.html';
+        }
+
+        function openCreateSubAccountPopup() {
+            document.getElementById("createSubAccountPopup").style.display = "block";
+        }
+
+        function closeCreateSubAccountPopup() {
+            document.getElementById("createSubAccountPopup").style.display = "none";
+        }
+
+        function createSubAccount() {
+            alert("Sub Account Created");
+            closeCreateSubAccountPopup();
+        }
+    </script>
+</body>
+
+</html>

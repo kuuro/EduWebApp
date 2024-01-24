@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In Popup Example</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: url('Resources/H15-1.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #signInModal,
+        #registerModal {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .closeButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #888;
+        }
+
+        #rememberMe {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sign In Popup Modal -->
+    <div id="signInModal" style="display: block;">
+        <h2>Sign In</h2>
+        <form onsubmit="signIn(); return false;">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button onclick="navigateToChooseSubAccount()">Sign In</button>
+        </form>
+        <p>Don't have an account? <a href="#" onclick="togglePopup('registerModal'); togglePopup('signInModal')">Register</a>
+        </p>
+        <input type="checkbox" id="rememberMe"> Remember me
+    </div>
+
+    <!-- Register Popup Modal -->
+    <div id="registerModal" style="display: none;">
+        <span class="closeButton" onclick="togglePopup('registerModal'),togglePopup('signInModal')">&times;</span>
+        <h2>Register</h2>
+        <form onsubmit="register(); return false;">
+            <label for="newUsername">New Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        function togglePopup(popupId) {
+            var popup = document.getElementById(popupId);
+            popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function signIn() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var rememberMe = document.getElementById('rememberMe').checked;
+
+            if (rememberMe) {
+                localStorage.setItem('savedUsername', username);
+                localStorage.setItem('savedPassword', password);
+            } else {
+                localStorage.removeItem('savedUsername');
+                localStorage.removeItem('savedPassword');
+            }
+            var username = document.getElementById('username').value;
+        }
+
+        function register() {
+            togglePopup('registerModal');
+            togglePopup('signInModal');
+        }
+
+        function navigateToChooseSubAccount() {
+            window.location.href = 'subAccount.html';
+        }
+
+        window.onload = function () {
+            var savedUsername = localStorage.getItem('savedUsername');
+            var savedPassword = localStorage.getItem('savedPassword');
+
+            if (savedUsername && savedPassword) {
+                document.getElementById('username').value = savedUsername;
+                document.getElementById('password').value = savedPassword;
+                document.getElementById('rememberMe').checked = true;
+            }
+        };
+    </script>
+
+</body>
+
+</html>
