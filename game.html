@@ -126,6 +126,86 @@
         .button-text {
             margin-right: 10px;
         }
+
+        .stickerRewardContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stickerReward {
+            text-align: center;
+            position: relative;
+            background: linear-gradient(45deg, #fdd835, #fff, #fdd835);
+            /* Yellow shiny effect */
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(253, 216, 53, 0.8);
+        }
+
+        .stickerReward img {
+            border-radius: 50%;
+            width: 250px;
+            height: 250px;
+        }
+
+        .stickerReward p {
+            margin-top: 20px;
+            font-size: 32px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: #333;
+            /* Darker color for better visibility */
+        }
+
+        .okButton {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin-top: 0px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .multipleStickersContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .multipleStickersGrid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            padding: 20px;
+            background: #878787;
+            /* Adjust the background color as needed */
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .stickerThumbnail {
+            border-radius: 25%;
+            width: 75px;
+            height: 75px;
+            object-fit: cover;
+        }
     </style>
 </head>
 
@@ -133,16 +213,16 @@
     <div class="container">
         <div class="left">
             <div class="top">
-                <img src="/Resources/ava1.png" />
+                <img src="Resources/ava1.png" />
             </div>
             <div class="bottom">
-                <p>Nguyen Thi Hai Du</p>
+                <p>Nguyen Thi Hai Dung</p>
                 <p>Lesson learned : 02 / 40</p>
                 <p id="progress"></p>
 
             </div>
             <button class="big-button">
-                <span class="button-text">Sticker Library</span>
+                <span class="button-text" onclick="openMultipleStickers()">Sticker Library</span>
             </button>
             <button class="big-button" onclick="fullScreen()">
                 <span class="button-text">Full Screen</span>
@@ -155,6 +235,17 @@
                 <span id="currentLevel">Level A</span>
                 <button id="nextLevel" disabled>▶</button>
             </div>
+        </div>
+        <div class="stickerRewardContainer" style="display: none;">
+            <div class="stickerReward">
+                <img id="stickerImage" src="Resources/ava5.png" alt="Sticker">
+                <p>You receive a new Sticker</p>
+                <button class="okButton" onclick="closeStickerReward()">OK</button>
+            </div>
+        </div>
+        <div class="multipleStickersContainer" style="display: none;">
+            <div class="multipleStickersGrid" id="stickerGrid"></div>
+            <button class="okButton" onclick="closeMultipleStickers()">OK</button>
         </div>
     </div>
 
@@ -195,7 +286,7 @@
                     productName: "Vkids Edu",
                     productVersion: "6.9",
                 }, (progress) => {
-                    document.getElementById('progress').textContent = "Loading "+(progress*100).toFixed(2)+"%";
+                    document.getElementById('progress').textContent = "Loading " + (progress * 100).toFixed(2) + "%";
                 }
                 ).then((unityInstance) => {
                     myUnityInstance = unityInstance;
@@ -214,6 +305,19 @@
         function fullScreen() {
             myUnityInstance.SetFullscreen(1)
         }
+        function closeStickerReward() {
+            document.querySelector('.stickerRewardContainer').style.display = 'none';
+        }
+        function openStickerReward() {
+            // Generate a random number between 1 and 5
+            var randomIndex = Math.floor(Math.random() * 5) + 1;
+            document.querySelector('.stickerRewardContainer').style.display = 'flex';
+            // Get the img element and update its src attribute
+            var imgElement = document.getElementById('stickerImage');
+            imgElement.src = 'Resources/ava' + randomIndex + '.png';
+
+            // Display the sticker reward container
+        }
         document.getElementById('prevLevel').addEventListener('click', function () {
             navigateLevel(-1);
         });
@@ -221,8 +325,35 @@
         document.getElementById('nextLevel').addEventListener('click', function () {
             navigateLevel(1);
         });
+        function closeMultipleStickers() {
+            document.querySelector('.multipleStickersContainer').style.display = 'none';
+        }
 
+        function openMultipleStickers() {
+            document.querySelector('.multipleStickersContainer').style.display = 'flex';
+            generateStickers();
+        }
+
+        function generateStickers() {
+            const stickerGrid = document.getElementById('stickerGrid');
+            stickerGrid.innerHTML = '';
+
+            // You can replace this loop with an array of sticker URLs
+            for (let i = 1; i <= 40; i++) {
+                const sticker = document.createElement('img');
+                sticker.classList.add('stickerThumbnail');
+                sticker.src = "Resources/ava" + generateRandomNumber(1, 5) + ".png";
+                sticker.alt = `Sticker ${i}`;
+                sticker.style.backgroundColor = 'white';
+                sticker.style.border = '3px solid orange'; // Outline
+                stickerGrid.appendChild(sticker);
+            }
+        }
+        function generateRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
         navigateLevel(0);
+        generateStickers();
     </script>
 
 </body>
