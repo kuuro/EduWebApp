@@ -250,6 +250,22 @@
     </div>
 
     <script>
+        // Function to hide elements while loading
+        function hideElementsWhileLoading() {
+            document.querySelector('.right').style.display = 'none';
+            document.querySelectorAll('.big-button').forEach(button => {
+                button.style.display = 'none';
+            });
+        }
+
+        // Function to display elements after loading
+        function showElementsAfterLoading() {
+            document.querySelector('.right').style.display = 'flex';
+            document.querySelectorAll('.big-button').forEach(button => {
+                button.style.display = 'flex';
+            });
+        }
+
         // Default current level
         var currentLevel = 'A';
         var myUnityInstance = null;
@@ -273,6 +289,9 @@
             currentLevel = levels.charAt(levelIndex);
             var level = "Level" + currentLevel;
 
+            // Hide elements while loading
+            hideElementsWhileLoading();
+
             var script = document.createElement('script');
             script.src = "WebGL/" + level + "/Build/" + level + ".loader.js";
 
@@ -290,6 +309,8 @@
                 }
                 ).then((unityInstance) => {
                     myUnityInstance = unityInstance;
+                    // Show elements after loading is done
+                    showElementsAfterLoading();
                 }).catch((error) => {
                     console.error("Error creating Unity instance:", error);
                 });
