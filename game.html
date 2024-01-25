@@ -16,6 +16,7 @@
             align-items: center;
             height: 100vh;
         }
+
         .container {
             display: flex;
             flex: 1;
@@ -103,6 +104,7 @@
             font-size: 24px;
             margin: 10px;
         }
+
         .big-button {
             display: flex;
             align-items: center;
@@ -131,11 +133,13 @@
     <div class="container">
         <div class="left">
             <div class="top">
-                <img src="/Resources/ava1.png"/>
+                <img src="/Resources/ava1.png" />
             </div>
             <div class="bottom">
                 <p>Nguyen Thi Hai Du</p>
                 <p>Lesson learned : 02 / 40</p>
+                <p id="progress"></p>
+
             </div>
             <button class="big-button">
                 <span class="button-text">Sticker Library</span>
@@ -146,11 +150,11 @@
         </div>
         <div class="right">
             <canvas id="unity-canvas" width=960 height=600></canvas>
-        <div class="lessonNav">
-            <button id="prevLevel" disabled>◀</button>
-            <span id="currentLevel">Level A</span>
-            <button id="nextLevel" disabled>▶</button>
-        </div>
+            <div class="lessonNav">
+                <button id="prevLevel" disabled>◀</button>
+                <span id="currentLevel">Level A</span>
+                <button id="nextLevel" disabled>▶</button>
+            </div>
         </div>
     </div>
 
@@ -166,8 +170,8 @@
                 myUnityInstance = null;
             }
 
-            document.getElementById('prevLevel').disabled=true;
-            document.getElementById('nextLevel').disabled=true;
+            document.getElementById('prevLevel').disabled = true;
+            document.getElementById('nextLevel').disabled = true;
             currentLevel = currentLevel.toUpperCase();
 
             var levelIndex = levels.indexOf(currentLevel);
@@ -190,7 +194,10 @@
                     companyName: "Vkids",
                     productName: "Vkids Edu",
                     productVersion: "6.9",
-                }).then((unityInstance) => {
+                }, (progress) => {
+                    document.getElementById('progress').textContent = "Loading "+(progress*100).toFixed(2)+"%";
+                }
+                ).then((unityInstance) => {
                     myUnityInstance = unityInstance;
                 }).catch((error) => {
                     console.error("Error creating Unity instance:", error);
@@ -199,12 +206,12 @@
                 document.getElementById('currentLevel').textContent = "Level " + currentLevel;
             };
 
-            document.getElementById('prevLevel').disabled=false;
-            document.getElementById('nextLevel').disabled=false;
+            document.getElementById('prevLevel').disabled = false;
+            document.getElementById('nextLevel').disabled = false;
 
             document.head.appendChild(script);
         }
-        function fullScreen(){
+        function fullScreen() {
             myUnityInstance.SetFullscreen(1)
         }
         document.getElementById('prevLevel').addEventListener('click', function () {
