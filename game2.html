@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity Web Player | Vkids Edu</title>
+    <link rel="shortcut icon" href="WebGL/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="WebGL/TemplateData/style.css">
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width="960" height="540" tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Vkids Edu</div>
+      </div>
+    </div>
+
+    <!-- Add a button for user to upload the .data file -->
+    <div style="text-align: center; margin-top: 20px;">
+      <label for="data-file-input" style="cursor: pointer; padding: 10px; background-color: #007BFF; color: white; border-radius: 5px;">Choose Your Data Path</label>
+      <input id="data-file-input" type="file" style="display: none;" accept=".data" />
+    </div>
+
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? "block" : "none";
+        }
+        var div = document.createElement("div");
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == "error") div.style = "background: red; padding: 10px;";
+        else {
+          if (type == "warning") div.style = "background: yellow; padding: 10px;";
+          setTimeout(function () {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "WebGL/Build";
+      var loaderUrl = buildUrl + "/WebGL Builds.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/WebGL Builds.data",
+        frameworkUrl: buildUrl + "/WebGL Builds.framework.js",
+        codeUrl: buildUrl + "/WebGL Builds.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Vkids",
+        productName: "Vkids Edu",
+        productVersion: "7.7",
+        showBanner: unityShowBanner,
+      };
+
+      var fileInput = document.querySelector("#data-file-input");
+
+      fileInput.addEventListener("change", (event) => {
+        var file = event.target.files[0];
+        if (file) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            var blob = new Blob([e.target.result], { type: "application/octet-stream" });
+            var url = URL.createObjectURL(blob);
+            config.dataUrl = url;
+            console.log("Updated dataUrl to: " + url);
+            loadUnity();
+          };
+          reader.readAsArrayBuffer(file);
+        }
+      });
+
+      function loadUnity() {
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+          })
+            .then((unityInstance) => {
+              document.querySelector("#unity-loading-bar").style.display = "none";
+              document.querySelector("#unity-fullscreen-button").onclick = () => {
+                unityInstance.SetFullscreen(1);
+              };
+            })
+            .catch((message) => {
+              alert(message);
+            });
+        };
+        document.body.appendChild(script);
+      }
+    </script>
+  </body>
+</html>
