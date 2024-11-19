@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "978036337097",
+    "project_id": "vkids-edu-test",
+    "storage_bucket": "vkids-edu-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978036337097:android:38b44d19bdab441b5be018",
+        "android_client_info": {
+          "package_name": "com.vkids.android.vkidsacademy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWeCH8qEIU61J8sFNODvflxAWfjz4CGEo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

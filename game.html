@@ -1,382 +1,127 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Vkids Edu</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: url('Resources/H15-1.png') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            display: flex;
-            flex: 1;
-            border: 10px solid orange;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .left {
-            flex: 1;
-            background-color: sienna;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .top {
-            border-radius: 50%;
-            overflow: hidden;
-            margin-bottom: 20px;
-            margin-top: 50px;
-            background-color: bisque;
-        }
-
-        .top img {
-            width: 100%;
-            height: auto;
-        }
-
-        .bottom {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .bottom p {
-            margin: 10px 0;
-            font-size: 40px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            color: aliceblue;
-        }
-
-        .bottom p:first-child {
-            border-bottom: 20px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .right {
-            flex: 3;
-            display: flex;
-            flex-direction: column;
-            border-left: 10px solid orange;
-            overflow: hidden;
-        }
-
-        #unity-canvas {
-            flex: 1;
-            width: 100%;
-            height: 100%;
-        }
-
-        .lessonNav {
-            text-align: center;
-            padding: 10px;
-            background-color: chocolate;
-        }
-
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        button {
-            font-size: 20px;
-            margin: 10px;
-            cursor: pointer;
-        }
-
-        #currentLevel {
-            font-size: 24px;
-            margin: 10px;
-        }
-
-        .big-button {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background-color: rgb(255, 170, 0);
-            color: #ffffff;
-            border: 2px solid rgb(230, 255, 181);
-            border-radius: 10px;
-            outline: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .big-button:hover {
-            background-color: rgb(255, 81, 0);
-        }
-
-        .button-text {
-            margin-right: 10px;
-        }
-
-        .stickerRewardContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .stickerReward {
-            text-align: center;
-            position: relative;
-            background: linear-gradient(45deg, #fdd835, #fff, #fdd835);
-            /* Yellow shiny effect */
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 0 40px rgba(253, 216, 53, 0.8);
-        }
-
-        .stickerReward img {
-            border-radius: 50%;
-            width: 250px;
-            height: 250px;
-        }
-
-        .stickerReward p {
-            margin-top: 20px;
-            font-size: 32px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            color: #333;
-            /* Darker color for better visibility */
-        }
-
-        .okButton {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin-top: 0px;
-            cursor: pointer;
-            border-radius: 10px;
-        }
-
-        .multipleStickersContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .multipleStickersGrid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 10px;
-            padding: 20px;
-            background: #878787;
-            /* Adjust the background color as needed */
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-        }
-
-        .stickerThumbnail {
-            border-radius: 25%;
-            width: 75px;
-            height: 75px;
-            object-fit: cover;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <div class="left">
-            <div class="top">
-                <img src="Resources/ava1.png" />
-            </div>
-            <div class="bottom">
-                <p>Nguyen Thi Hai Dung</p>
-                <p>Lesson learned : 02 / 40</p>
-                <p id="progress"></p>
-
-            </div>
-            <button class="big-button">
-                <span class="button-text" onclick="openMultipleStickers()">Sticker Library</span>
-            </button>
-            <button class="big-button" onclick="fullScreen()">
-                <span class="button-text">Full Screen</span>
-            </button>
+    <title>Unity Web Player | Vkids Edu</title>
+    <link rel="shortcut icon" href="WebGL/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="WebGL/TemplateData/style.css">
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=960 height=540 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
         </div>
-        <div class="right">
-            <canvas id="unity-canvas" width=960 height=600></canvas>
-            <div class="lessonNav">
-                <button id="prevLevel" disabled>◀</button>
-                <span id="currentLevel">Level A</span>
-                <button id="nextLevel" disabled>▶</button>
-            </div>
-        </div>
-        <div class="stickerRewardContainer" style="display: none;">
-            <div class="stickerReward">
-                <img id="stickerImage" src="Resources/ava5.png" alt="Sticker">
-                <p>You receive a new Sticker</p>
-                <button class="okButton" onclick="closeStickerReward()">OK</button>
-            </div>
-        </div>
-        <div class="multipleStickersContainer" style="display: none;">
-            <div class="multipleStickersGrid" id="stickerGrid"></div>
-            <button class="okButton" onclick="closeMultipleStickers()">OK</button>
-        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Vkids Edu</div>
+      </div>
     </div>
-
     <script>
-        // Function to hide elements while loading
-        function hideElementsWhileLoading() {
-            document.querySelector('.right').style.display = 'none';
-            document.querySelectorAll('.big-button').forEach(button => {
-                button.style.display = 'none';
-            });
+      var canvas = document.querySelector("#unity-canvas");
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
         }
-
-        // Function to display elements after loading
-        function showElementsAfterLoading() {
-            document.querySelector('.right').style.display = 'flex';
-            document.querySelectorAll('.big-button').forEach(button => {
-                button.style.display = 'flex';
-            });
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
         }
+        updateBannerVisibility();
+      }
 
-        // Default current level
-        var currentLevel = 'A';
-        var myUnityInstance = null;
-        var levels = 'ABCD';
+      var buildUrl = "WebGL/Build";
+      var loaderUrl = buildUrl + "/WebGL Builds.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/WebGL Builds.data",
+        frameworkUrl: buildUrl + "/WebGL Builds.framework.js",
+        codeUrl: buildUrl + "/WebGL Builds.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Vkids",
+        productName: "Vkids Edu",
+        productVersion: "7.7",
+        showBanner: unityShowBanner,
+      };
 
-        function navigateLevel(direction) {
-            if (myUnityInstance != null) {
-                myUnityInstance.Quit();
-                myUnityInstance = null;
-            }
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
 
-            document.getElementById('prevLevel').disabled = true;
-            document.getElementById('nextLevel').disabled = true;
-            currentLevel = currentLevel.toUpperCase();
+      // If you would like all file writes inside Unity Application.persistentDataPath
+      // directory to automatically persist so that the contents are remembered when
+      // the user revisits the site the next time, uncomment the following line:
+      // config.autoSyncPersistentDataPath = true;
+      // This autosyncing is currently not the default behavior to avoid regressing
+      // existing user projects that might rely on the earlier manual
+      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+      // expected to change.
 
-            var levelIndex = levels.indexOf(currentLevel);
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
 
-            // Adjust the index based on the direction and cycle if needed
-            levelIndex = (levelIndex + direction + levels.length) % levels.length;
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
 
-            currentLevel = levels.charAt(levelIndex);
-            var level = "Level" + currentLevel;
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
 
-            // Hide elements while loading
-            hideElementsWhileLoading();
 
-            var script = document.createElement('script');
-            script.src = "WebGL/" + level + "/Build/" + level + ".loader.js";
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = "960px";
+        canvas.style.height = "540px";
+      }
 
-            script.onload = function () {
-                createUnityInstance(document.querySelector("#unity-canvas"), {
-                    dataUrl: "WebGL/" + level + "/Build/" + level + ".data.unityweb",
-                    frameworkUrl: "WebGL/" + level + "/Build/" + level + ".framework.js.unityweb",
-                    codeUrl: "WebGL/" + level + "/Build/" + level + ".wasm.unityweb",
-                    streamingAssetsUrl: "WebGL/" + level + "/Build/StreamingAssets",
-                    companyName: "Vkids",
-                    productName: "Vkids Edu",
-                    productVersion: "6.9",
-                }, (progress) => {
-                    document.getElementById('progress').textContent = "Loading " + (progress * 100).toFixed(2) + "%";
-                }
-                ).then((unityInstance) => {
-                    myUnityInstance = unityInstance;
-                    // Show elements after loading is done
-                    showElementsAfterLoading();
-                }).catch((error) => {
-                    console.error("Error creating Unity instance:", error);
-                });
+      document.querySelector("#unity-loading-bar").style.display = "block";
 
-                document.getElementById('currentLevel').textContent = "Level " + currentLevel;
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
+                document.querySelector("#unity-loading-bar").style.display = "none";
+                document.querySelector("#unity-fullscreen-button").onclick = () => {
+                  unityInstance.SetFullscreen(1);
+                };
+
+              }).catch((message) => {
+                alert(message);
+              });
             };
 
-            document.getElementById('prevLevel').disabled = false;
-            document.getElementById('nextLevel').disabled = false;
+      document.body.appendChild(script);
 
-            document.head.appendChild(script);
-        }
-        function fullScreen() {
-            myUnityInstance.SetFullscreen(1)
-        }
-        function closeStickerReward() {
-            document.querySelector('.stickerRewardContainer').style.display = 'none';
-        }
-        function openStickerReward() {
-            // Generate a random number between 1 and 5
-            var randomIndex = Math.floor(Math.random() * 5) + 1;
-            document.querySelector('.stickerRewardContainer').style.display = 'flex';
-            // Get the img element and update its src attribute
-            var imgElement = document.getElementById('stickerImage');
-            imgElement.src = 'Resources/ava' + randomIndex + '.png';
-
-            // Display the sticker reward container
-        }
-        document.getElementById('prevLevel').addEventListener('click', function () {
-            navigateLevel(-1);
-        });
-
-        document.getElementById('nextLevel').addEventListener('click', function () {
-            navigateLevel(1);
-        });
-        function closeMultipleStickers() {
-            document.querySelector('.multipleStickersContainer').style.display = 'none';
-        }
-
-        function openMultipleStickers() {
-            document.querySelector('.multipleStickersContainer').style.display = 'flex';
-            generateStickers();
-        }
-
-        function generateStickers() {
-            const stickerGrid = document.getElementById('stickerGrid');
-            stickerGrid.innerHTML = '';
-
-            // You can replace this loop with an array of sticker URLs
-            for (let i = 1; i <= 40; i++) {
-                const sticker = document.createElement('img');
-                sticker.classList.add('stickerThumbnail');
-                sticker.src = "Resources/ava" + generateRandomNumber(1, 5) + ".png";
-                sticker.alt = `Sticker ${i}`;
-                sticker.style.backgroundColor = 'white';
-                sticker.style.border = '3px solid orange'; // Outline
-                stickerGrid.appendChild(sticker);
-            }
-        }
-        function generateRandomNumber(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-        navigateLevel(0);
-        generateStickers();
     </script>
-
-</body>
-
+  </body>
 </html>
