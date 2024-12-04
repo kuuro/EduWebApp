@@ -49,81 +49,103 @@
       </div>
     </div>
     <script>
-      var canvas = document.querySelector("#unity-canvas");
-
-      function unityShowBanner(msg, type) {
-        var warningBanner = document.querySelector("#unity-warning");
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        var canvas = document.querySelector("#unity-canvas");
+      
+        function unityShowBanner(msg, type) {
+          var warningBanner = document.querySelector("#unity-warning");
+          function updateBannerVisibility() {
+            warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+          }
+          var div = document.createElement('div');
+          div.innerHTML = msg;
+          warningBanner.appendChild(div);
+          if (type == 'error') div.style = 'background: red; padding: 10px;';
+          else {
+            if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+            setTimeout(function () {
+              warningBanner.removeChild(div);
+              updateBannerVisibility();
+            }, 5000);
+          }
+          updateBannerVisibility();
         }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
+      
+        function resizeCanvas() {
+          var screenWidth = window.innerWidth;
+          var screenHeight = window.innerHeight;
+      
+          // Calculate canvas dimensions based on 70% of screen width
+          var canvasWidth = screenWidth * 0.7;
+          var canvasHeight = canvasWidth / (16 / 9); // Maintain 16:9 aspect ratio
+      
+          // Ensure canvas height doesn't exceed screen height
+          if (canvasHeight > screenHeight) {
+            canvasHeight = screenHeight;
+            canvasWidth = canvasHeight * (16 / 9); // Adjust width to maintain aspect ratio
+          }
+      
+          // Apply calculated dimensions
+          canvas.style.width = canvasWidth + "px";
+          canvas.style.height = canvasHeight + "px";
         }
-        updateBannerVisibility();
-      }
-
-      var buildUrl = "WebGL/Build";
-      var loaderUrl = buildUrl + "/WebGL Builds.loader.js";
-      var config = {
-        arguments: [],
-        dataUrl: buildUrl + "/WebGL Builds.data",
-        frameworkUrl: buildUrl + "/WebGL Builds.framework.js",
-        codeUrl: buildUrl + "/WebGL Builds.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Vkids",
-        productName: "Vkids Edu",
-        productVersion: "7.7",
-        showBanner: unityShowBanner,
-      };
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        document.querySelector("#unity-container").className = "unity-mobile";
-        canvas.className = "unity-mobile";
-      } else {
-        canvas.style.width = "1440px";
-        canvas.style.height = "810px";
-      }
-
-      document.querySelector("#unity-loading-bar").style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          document.querySelector("#unity-loading-bar").style.display = "none";
-          document.querySelector("#unity-fullscreen-button").onclick = () => {
-            unityInstance.SetFullscreen(1);
-          };
-
-          document.addEventListener("fullscreenchange", () => {
-            if (document.fullscreenElement) {
-              canvas.style.border = "none";
-              canvas.style.borderRadius = "0";
-            } else {
-              canvas.style.border = "20px solid sandybrown";
-              canvas.style.borderRadius = "20px";
-            }
+      
+        // Call resizeCanvas on window resize
+        window.addEventListener("resize", resizeCanvas);
+      
+        // Initial call to set canvas size
+        resizeCanvas();
+      
+        var buildUrl = "WebGL/Build";
+        var loaderUrl = buildUrl + "/WebGL Builds.loader.js";
+        var config = {
+          arguments: [],
+          dataUrl: buildUrl + "/WebGL Builds.data",
+          frameworkUrl: buildUrl + "/WebGL Builds.framework.js",
+          codeUrl: buildUrl + "/WebGL Builds.wasm",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "Vkids",
+          productName: "Vkids Edu",
+          productVersion: "7.7",
+          showBanner: unityShowBanner,
+        };
+      
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          var meta = document.createElement('meta');
+          meta.name = 'viewport';
+          meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+          document.getElementsByTagName('head')[0].appendChild(meta);
+          document.querySelector("#unity-container").className = "unity-mobile";
+          canvas.className = "unity-mobile";
+        }
+      
+        document.querySelector("#unity-loading-bar").style.display = "block";
+      
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+          }).then((unityInstance) => {
+            document.querySelector("#unity-loading-bar").style.display = "none";
+            document.querySelector("#unity-fullscreen-button").onclick = () => {
+              unityInstance.SetFullscreen(1);
+            };
+      
+            document.addEventListener("fullscreenchange", () => {
+              if (document.fullscreenElement) {
+                canvas.style.border = "none";
+                canvas.style.borderRadius = "0";
+              } else {
+                canvas.style.border = "20px solid sandybrown";
+                canvas.style.borderRadius = "20px";
+              }
+            });
+          }).catch((message) => {
+            alert(message);
           });
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-
-      document.body.appendChild(script);
-    </script>
+        };
+      
+        document.body.appendChild(script);
+      </script>      
   </body>
 </html>
