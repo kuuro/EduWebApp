@@ -1,65 +1,129 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Your Page Title</title>
+    <title>Unity Web Player | Vkids Edu</title>
+    <link rel="shortcut icon" href="WebGL/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="WebGL/TemplateData/style.css">
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: url('Resources/H15-1.png') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+      /* @keyframes moveBackground {
+        from { background-position: 0 0; }
+        to { background-position: -10000px 0; }
+      } */
 
-        .play-button-container {
-            position: relative;
-        }
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
 
-        .play-button {
-            width: 150px;
-            height: 150px;
-            background: url('Resources/Untitled-1_0000_Vector-Smart-Object.png') no-repeat center center;
-            background-size: contain;
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out; /* Add a smooth transition effect */
-            animation: rotate 2s linear infinite; /* Add a rotation animation */
-        }
+      body {
+        background: url('Resources/gen-39-\(1\)_0009_Vector-Smart-Object9.png') repeat-x; /* Add background image */
+        background-size: cover; /* Ensure the background image covers the entire screen */
+        /*animation: moveBackground 6000s linear infinite; /* Animate the background */
+      }
 
-        .play-button:hover {
-            transform: scale(1.1); /* Scale the button on hover */
-            animation: none; /* Disable rotation on hover */
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: scale(1);
-            }50% {
-                transform: scale(1.5);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
+      #unity-canvas {
+        border: 20px solid sandybrown; /* Add a border to the canvas */
+        border-radius: 20px; /* Add border radius to the canvas */
+      }
     </style>
-</head>
-
-<body>
-    <div class="play-button-container">
-        <div class="play-button" onclick="play()"></div>
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width="1440" height="810" tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Vkids Edu</div>
+      </div>
     </div>
-
     <script>
-        function play() {
-            // Add your play video logic here
-            window.location.href = 'sign.html';
-        }
-    </script>
-</body>
+      var canvas = document.querySelector("#unity-canvas");
 
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "WebGL/Build";
+      var loaderUrl = buildUrl + "/WebGL Builds.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/WebGL Builds.data",
+        frameworkUrl: buildUrl + "/WebGL Builds.framework.js",
+        codeUrl: buildUrl + "/WebGL Builds.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Vkids",
+        productName: "Vkids Edu",
+        productVersion: "7.7",
+        showBanner: unityShowBanner,
+      };
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
+      } else {
+        canvas.style.width = "1440px";
+        canvas.style.height = "810px";
+      }
+
+      document.querySelector("#unity-loading-bar").style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          document.querySelector("#unity-loading-bar").style.display = "none";
+          document.querySelector("#unity-fullscreen-button").onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+
+          document.addEventListener("fullscreenchange", () => {
+            if (document.fullscreenElement) {
+              canvas.style.border = "none";
+              canvas.style.borderRadius = "0";
+            } else {
+              canvas.style.border = "20px solid sandybrown";
+              canvas.style.borderRadius = "20px";
+            }
+          });
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+
+      document.body.appendChild(script);
+    </script>
+  </body>
 </html>
